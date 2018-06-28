@@ -1,0 +1,6 @@
+= Maven Travis Output
+
+Ensure something is written on the output each minute.
+
+It helps maven builds when executed with `-q` or a customized log level
+and a lot of things is happening behind the scene (avoids "false" Travis timeouts).
