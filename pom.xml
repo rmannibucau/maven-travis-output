@@ -4,7 +4,7 @@
 
   <groupId>com.github.rmannibucau</groupId>
   <artifactId>maven-travis-output</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>Travis output extension</name>
   <description>Some extension Travis oriented.</description>
   <url>https://github.com/rmannibucau/maven-travis-output</url>
@@ -28,7 +28,7 @@
     <connection>scm:git:https://github.com/rmannibucau/maven-travis-output.git</connection>
     <developerConnection>scm:git:https://github.com/rmannibucau/maven-travis-output.git</developerConnection>
     <url>https://github.com/rmannibucau/maven-travis-output</url>
-    <tag>HEAD</tag>
+    <tag>maven-travis-output-1.0.0</tag>
   </scm>
 
   <distributionManagement>
