@@ -4,12 +4,14 @@ import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 
+import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import org.apache.maven.eventspy.EventSpy;
 import org.codehaus.plexus.component.annotations.Component;
@@ -47,9 +49,20 @@ public class TravisOutput implements EventSpy {
 
     private void log() {
         final Collection<Object> copy = getEventsAndFlush();
-        System.out.println("Events executed:\n" + copy.stream().collect(groupingBy(Object::getClass)).entrySet().stream()
-                .sorted(comparing(e -> e.getValue().size())).map(e -> "  " + e.getKey().getSimpleName() + ": #" + e.getValue().size())
-                .collect(joining("\n")));
+        if (copy.isEmpty()) {
+            System.out.println("No event");
+        } else {
+            System.out.println("Events executed:\n" + copy.stream().collect(groupingBy(Object::getClass)).entrySet().stream()
+                    .sorted(comparing(e -> e.getValue().size()))
+                    .map(e -> "  " + e.getKey().getSimpleName() + ": #" + e.getValue().size()).collect(joining("\n")));
+        }
+
+        if (Boolean.getBoolean("rmannibucau.travis.dumpOnLog")) {
+            Stream.of(ManagementFactory.getThreadMXBean().dumpAllThreads(false, false)).forEach(info -> {
+                System.out.println(info.getThreadName() + ':');
+                Stream.of(info.getStackTrace()).forEach(elt -> System.out.println("\tat " + elt));
+            });
+        }
     }
 
     private synchronized Collection<Object> getEventsAndFlush() {
