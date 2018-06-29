@@ -4,3 +4,14 @@ Ensure something is written on the output each minute.
 
 It helps maven builds when executed with `-q` or a customized log level
 and a lot of things is happening behind the scene (avoids "false" Travis timeouts).
+
+== Setup
+
+There are multiple ways to do it but one simple is to grab the jar
+and pass it in maven ext system properties:
+
+[source]
+----
+mvn dependency:copy -Dartifact=com.github.rmannibucau:maven-travis-output:1.0.0 -DoutputDirectory=/tmp
+export MAVEN_OPTS="-Dmaven.ext.class.path=/tmp/maven-travis-output-1.0.0.jar -B -q -e"
+----
