@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.github.rmannibucau</groupId>
   <artifactId>hierarchy-extension</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <name>Hierarchy Maven Extension</name>
   <description>A maven extension enabling to ignore pom packaging and copy the packaging=pom plugin definition in
     children.
@@ -31,7 +29,7 @@
     <connection>scm:git:https://github.com/rmannibucau/maven-travis-output.git</connection>
     <developerConnection>scm:git:https://github.com/rmannibucau/maven-travis-output.git</developerConnection>
     <url>https://github.com/rmannibucau/maven-travis-output</url>
-    <tag>HEAD</tag>
+    <tag>hierarchy-extension-0.0.1</tag>
   </scm>
 
   <distributionManagement>
