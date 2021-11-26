@@ -1,0 +1,118 @@
+= Maven hierarchy Extension
+
+A simple maven extension moving a packaging=pom module plugin definition with virtual configuration property `rmannibucau-hierarchy=<>` to the children.
+
+The value of this attribute is `parent(xxx)|child(xxx)`. The `xxx` are a set of properties to set.
+It will often be used with `skip` property of a particular mojo: `rmannibucau-hierarchy="parent(skip=true)|child(skip=false)"`.
+Attributes can be separated with `;`: `parent(skip=true;skipTests=true)`.
+
+IMPORTANT: right now this extension only works for 1 level which means `pom project -> jar project` will work but not `pom project -> pom project -> jar project`.
+Another limitation is that it only handles first level configuration children for now (not nested ones).
+Finally, if the attribute is explicitly set (in a child in general), it is not overwritten.
+
+== Usage
+
+Assuming you have this kind of project:
+
+[source]
+----
+.
+|- my-parent-1
+|      `- ...
+`- my-parent-2
+       |- child-1
+       `- child-2
+----
+
+That `my-parent-2` `pom.xml` defines a plugin like that:
+
+[source,xml]
+----
+<plugin>
+  <rmannibucau-hierarchy>parent(skip=true)|child(skip=false)</rmannibucau-hierarchy>
+  ...
+</plugin>
+----
+
+Then, `child-1` and `child-2` do not need to redefine this plugin, not `my-parent-2` to skip it.
+
+To enable that feature just register the extension in your build section:
+
+[source,xml]
+----
+<build>
+    <extensions>
+        <extension>
+            <groupId>com.github.rmannibucau</groupId>
+            <artifactId>hierarchy-extension</artifactId>
+            <version>${extension.version}</version>
+        </extension>
+    </extensions>
+    ...
+</build>
+----
+
+== Example
+
+Here is an example with `frontend-maven-plugin` to download node only in the parent and run a build only in children:
+
+[source,xml]
+----
+<plugin>
+  <groupId>com.github.eirslett</groupId>
+  <artifactId>frontend-maven-plugin</artifactId>
+  <version>1.12.0</version>
+  <executions>
+    <execution>
+      <id>install-node-npm</id>
+      <phase>generate-resources</phase>
+      <goals>
+        <goal>install-node-and-npm</goal>
+      </goals>
+      <configuration> <!-- install it once in the parent -->
+        <rmannibucau-hierarchy>parent(skip=false)|child(skip=true)</rmannibucau-hierarchy>
+        <installDirectory>${project.basedir}/.node</installDirectory>
+        <nodeVersion>v17.0.1</nodeVersion>
+        <npmVersion>8.1.0</npmVersion>
+        <ignoredPackagings> <!-- ignore in children -->
+          <ignoredPackaging>jar</ignoredPackaging>
+        </ignoredPackagings>
+      </configuration>
+    </execution>
+    <execution>
+      <id>npm-install</id>
+      <phase>process-classes</phase>
+      <goals>
+        <goal>npm</goal>
+      </goals>
+      <configuration>
+        <rmannibucau-hierarchy>parent(skip=true)|child(skip=false)</rmannibucau-hierarchy>
+      </configuration>
+    </execution>
+    <execution>
+      <id>npm-build</id>
+      <phase>process-classes</phase>
+      <goals>
+        <goal>npm</goal>
+      </goals>
+      <configuration>
+        <rmannibucau-hierarchy>parent(skip=true)|child(skip=false)</rmannibucau-hierarchy>
+        <environmentVariables>
+          <PROJECT_VERSION>${project.version}</PROJECT_VERSION>
+          <BUILD_DATE>${maven.build.timestamp}</BUILD_DATE>
+        </environmentVariables>
+        <arguments>run build</arguments>
+      </configuration>
+    </execution>
+  </executions>
+  <configuration> <!-- for children, reuse parent installation of node and run the build in child module -->
+    <installDirectory>${project.parent.basedir}/.node</installDirectory>
+    <workingDirectory>${project.basedir}</workingDirectory>
+  </configuration>
+</plugin>
+----
+
+
+== TODO:
+
+write some tests, for now it is more a PoC/demo.
