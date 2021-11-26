@@ -28,9 +28,9 @@
   </dependencies>
 
   <scm>
-    <connection>scm:git:https://github.com/rmannibucau/maven-travis-output.git</connection>
-    <developerConnection>scm:git:https://github.com/rmannibucau/maven-travis-output.git</developerConnection>
-    <url>https://github.com/rmannibucau/maven-travis-output</url>
+    <connection>scm:git:https://github.com/rmannibucau/hierarchy-extension.git</connection>
+    <developerConnection>scm:git:https://github.com/rmannibucau/hierarchy-extension.git</developerConnection>
+    <url>https://github.com/rmannibucau/hierarchy-extension</url>
     <tag>HEAD</tag>
   </scm>
 
@@ -48,7 +48,7 @@
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
-      <url>https://github.com/rmannibucau/maven-travis-output/blob/master/LICENSE</url>
+      <url>https://github.com/rmannibucau/hierarchy-extension/blob/master/LICENSE</url>
       <distribution>may be downloaded from the Maven repository</distribution>
     </license>
   </licenses>
